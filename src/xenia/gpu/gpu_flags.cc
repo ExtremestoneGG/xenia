@@ -20,6 +20,14 @@ DEFINE_path(
 
 DEFINE_bool(vsync, true, "Enable VSYNC.", "GPU");
 
+DEFINE_bool(
+    low_end_gpu_profile, false,
+    "Tune automatic GPU choices for integrated and low-end GPUs. Prefers "
+    "Vulkan when no graphics API is selected, keeps rendering at the game's "
+    "native resolution, and reserves more CPU time for emulation while Vulkan "
+    "pipelines are compiled.",
+    "GPU");
+
 DEFINE_uint64(framerate_limit, 0,
               "Maximum frames per second. 0 = Unlimited frames.\n"
               "Defaults to 60, when set to 0, and VSYNC is enabled.",

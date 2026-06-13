@@ -18,6 +18,8 @@ DECLARE_path(dump_shaders);
 
 DECLARE_bool(vsync);
 
+DECLARE_bool(low_end_gpu_profile);
+
 DECLARE_uint64(framerate_limit);
 
 DECLARE_bool(gpu_allow_invalid_fetch_constants);

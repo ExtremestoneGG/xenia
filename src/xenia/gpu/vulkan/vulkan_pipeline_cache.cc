@@ -201,8 +201,11 @@ bool VulkanPipelineCache::Initialize() {
   if (cvars::vulkan_pipeline_creation_threads != 0) {
     size_t creation_thread_count;
     if (cvars::vulkan_pipeline_creation_threads < 0) {
-      creation_thread_count =
-          std::max(logical_processor_count * 3 / 4, uint32_t(1));
+      creation_thread_count = cvars::low_end_gpu_profile
+                                  ? std::max(logical_processor_count / 4,
+                                             uint32_t(1))
+                                  : std::max(logical_processor_count * 3 / 4,
+                                             uint32_t(1));
     } else {
       creation_thread_count =
           std::min(uint32_t(cvars::vulkan_pipeline_creation_threads),
@@ -993,7 +996,10 @@ void VulkanPipelineCache::TranslateShadersForStorage(
     uint32_t logical_processor_count =
         std::max(uint32_t(1), xe::threading::logical_processor_count());
     if (cvars::vulkan_pipeline_creation_threads < 0) {
-      thread_count = std::max(logical_processor_count * 3 / 4, uint32_t(1));
+      thread_count = cvars::low_end_gpu_profile
+                         ? std::max(logical_processor_count / 4, uint32_t(1))
+                         : std::max(logical_processor_count * 3 / 4,
+                                    uint32_t(1));
     } else {
       thread_count = std::min(uint32_t(cvars::vulkan_pipeline_creation_threads),
                               logical_processor_count);

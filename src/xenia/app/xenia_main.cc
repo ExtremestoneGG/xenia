@@ -26,6 +26,7 @@
 #include "xenia/config.h"
 #include "xenia/debug/ui/debug_window.h"
 #include "xenia/emulator.h"
+#include "xenia/gpu/gpu_flags.h"
 #include "xenia/kernel/xam/xam_module.h"
 #include "xenia/ui/file_picker.h"
 #include "xenia/ui/window.h"
@@ -406,11 +407,19 @@ std::unique_ptr<gpu::GraphicsSystem> EmulatorApp::CreateGraphicsSystem() {
   }
   Factory<gpu::GraphicsSystem> factory;
 #if XE_PLATFORM_WIN32
-  factory.Add<gpu::d3d12::D3D12GraphicsSystem>("d3d12");
+  if (!cvars::low_end_gpu_profile) {
+    factory.Add<gpu::d3d12::D3D12GraphicsSystem>("d3d12");
+  }
 #endif  // XE_PLATFORM_WIN32
 #if !XE_PLATFORM_MAC
   factory.Add<gpu::vulkan::VulkanGraphicsSystem>("vulkan");
 #endif
+#if XE_PLATFORM_WIN32
+  if (cvars::low_end_gpu_profile) {
+    // Keep D3D12 as a fallback if Vulkan isn't available on the host.
+    factory.Add<gpu::d3d12::D3D12GraphicsSystem>("d3d12");
+  }
+#endif  // XE_PLATFORM_WIN32
   std::unique_ptr<gpu::GraphicsSystem> gpu_implementation =
       factory.Create(gpu_implementation_name);
   if (!gpu_implementation) {

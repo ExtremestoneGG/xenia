@@ -9,6 +9,18 @@
 Xenia Canary is an experimental fork of the Xenia emulator. For more information, see the
 [Xenia Canary wiki](https://github.com/xenia-canary/xenia-canary/wiki).
 
+## PC Fraco profile
+
+This fork adds an opt-in `low_end_gpu_profile` for integrated and low-end GPUs.
+When enabled, automatic GPU selection prefers Vulkan with a D3D12 fallback,
+rendering is kept at the game's native resolution, and automatic Vulkan
+pipeline compilation uses fewer worker threads so CPU emulation remains
+responsive.
+
+The companion Xenia Manager fork can apply the profile and its conservative
+supporting settings with one click while backing up the previous configuration.
+The profile does not enable compatibility-risky rendering shortcuts by default.
+
 Come chat with us about **emulator-related topics** on [Discord](https://discord.gg/Q9mxZf9).
 For developer chat join `#dev` but stay on topic. Lurking is not only fine, but encouraged!
 Please check the [FAQ](https://github.com/xenia-canary/xenia-canary/wiki/FAQ) page before asking questions.

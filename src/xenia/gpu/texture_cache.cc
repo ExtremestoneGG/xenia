@@ -151,6 +151,12 @@ bool TextureCache::GetConfigDrawResolutionScale(uint32_t& x_out,
   uint32_t config_y =
       uint32_t(std::max(INT32_C(1), cvars::draw_resolution_scale_y));
 
+  if (cvars::low_end_gpu_profile) {
+    x_out = 1;
+    y_out = 1;
+    return config_x == 1 && config_y == 1;
+  }
+
   uint32_t clamped_x = std::min(kMaxDrawResolutionScaleAlongAxis, config_x);
   uint32_t clamped_y = std::min(kMaxDrawResolutionScaleAlongAxis, config_y);
   x_out = clamped_x;
